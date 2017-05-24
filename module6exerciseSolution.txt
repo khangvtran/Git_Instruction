@@ -1,0 +1,208 @@
+For turning in work for exercise 5, copy your answer to the questions
+labeled Q1, Q2, Q3, Q4a, Q4b...
+
+================= git ===================
+
+1. Create a new directory and go to this directory to initialize
+it as a git directory.
+Q1. Show the command you used.
+
+Answer: mkdir gitDir      # create new directory
+        cd gitDir         # go to the new directory
+        git init          # initialize the directory for git
+
+-------------------------------------
+
+2. Set your user name and email for git.
+Q2. Show the command you used.
+
+Answer: git config --global user.name 'your name'
+        git config --global user.email 'your email'
+
+-------------------------------------
+
+3. Create a new file1 with a line of text, then put it into the git
+repository in the master branch.
+Q3. Show the command(s) you used.
+
+Answer:  echo a line of text > file1      # create new file
+         git add file1                    # add file1 to staging area
+         git commit -m "add file1"        # commit new file
+
+Look at the status of the repository and list the files to make sure
+that the commit worked.
+
+Check: git status          # should show "nothing to commit"
+                           # and "working tree clean"
+       ls                  # should show file1
+
+-------------------------------------
+4. Create a new branch called testing.
+Q4a. Show the command you used 
+
+Answer: git branch testing
+
+List the directory to see that file1 is already there.
+Go to this testing branch and create a new file2 with a line of text,
+then put it in the staging area.
+
+Steps:  git checkout testing         # go to testing branch
+        echo file 2 text > file2     # create file2
+
+Q4b. Show the command you used to put the file in the staging area.
+
+Answer: git add file2                # add file2 to staging area
+
+Append a new line of text into file2, then put it in the staging
+area.
+ 
+Steps: echo line 2 of file2 >> file2  # add another line of text
+       git add file2                  # add file2 to staging area
+
+Q4c. Show the status of the repository.
+
+Answer: git status    # should show that file2 has "changes to commit"
+
+Put all staged files in the git repository.
+
+Step:  git commit -m "add file2" 
+
+Look at the status of the testing branch to make sure all files
+are committed so you're ready for the next question.
+Q4d. Show the status of the repository and show the file listing
+
+Answers:  git status     # should show "nothing to commit"
+          ls             # should show file1 and file2
+
+-------------------------------------
+5. Go back to the master branch and do a file listing.
+Q5A. Show the commands that you used.
+
+Answers:  git checkout master    # go to master branch
+          ls                     # only file1 is listed
+
+Merge the testing branch into the master branch.
+Q5a. Show the command(s) that you used. 
+
+Answer:  git merge testing      # merge testing into master
+
+Q5b. Show the file listing.
+
+Answer:   ls             # both file1 and file2 are listed
+
+
+-------------------------------------
+6. Delete file1 from the repository
+Q6a. Show the command(s) that you used.
+
+Answer:  git rm file1
+         git commit -m "remove file1"
+
+
+
+==================== gzip and tar =================
+
+7. Copy module4Aexercise from the cis18b directory (from
+some weeks ago) to a new file called testfile
+Q7a. Show the long listing of testfile. What's the file size?
+
+Answer: 1606 bytes, from ls -l output
+
+Create a compressed testfile, use the verbose option
+Q7b. Show the command you used. 
+
+Answer: gzip -v testfile
+ the -v option should tell you that testfile is replaced
+ with testfile.gz and show the compression rate as a percentage
+
+Do a listing of test* to see the gzip filename.
+Q7c. How is the access time and size of the gzip file compared to
+the original testfile?
+
+Answer: same access time, file size is reduced
+
+Decompress the gzip file.
+Q7d. How is the access time and size of the decompressed file
+compared to the original testfile?
+
+Step: gzip -d testfile.gz
+      or
+      gunzip testfile.gz
+
+Answer:  The timestamp of testfile is still the same as the original
+ testfile.
+ Note that the .gz extension is required to decompress the file.
+
+-------------------------------------
+8. Copy the module5exercise directory to your local directory
+and give it the name testdir
+
+Create an archive file for the testdir directory, make sure it's
+not compressed
+Q8. Show the command you used.
+
+Answer:    tar cvf testdir.tar testdir
+ There can be a - in front of cvf:  -cvf
+ Due to the -v option, we should see the list of files
+ that are being archived into testdir.tar
+
+-------------------------------------
+9. Append testfile to the archive file
+Q9a. Show the command you used.
+
+Answer: tar -rf testdir.tar testfile
+
+Q9b. Show the files that are in the archive file
+
+Answer: tar -tf testdir.tar
+
+-------------------------------------
+10. Compress the archive file
+Q10. Show the command you used.
+
+Answer:  gzip testdir.tar
+
+ Use: ls *tar*
+ to see the zipped filename
+
+
+-------------------------------------
+11. Create a new directory called mod6
+Copy the archive file to mod6
+Move to the mod6 directory and extract all the files
+Q11a. Show the command you used.
+
+Answer: 
+First way:
+   gzip -d testdir.tar.gz        => produces the decompressed testdir.tar
+   tar xf testdir.tar            => produces the directory testdir
+
+Second way:
+   tar xzvf testdir.tar.gz       => produces the testdir
+
+Again, the -  in front of xf or in front of xzvf is optional
+
+Q11b. Run the tree command at the mod6 directory to show that all 
+the files of module5exercises are there.
+
+Answer: tree    
+Should see all the files and subdirectories
+
+-------------------------------------
+Go back to the directory where testfile is.
+Look at the size of testfile.
+
+Step: ls -l testfile
+
+Change testfile so it follows the Windows format
+
+Step; unix2dos testfile
+
+Look at the size of testfile. 
+
+Step: ls -l testfile
+
+Q12. Why is there a change in size?
+Answer: the size is larger because of the extra \r characters that 
+are added to the end of each line.
+

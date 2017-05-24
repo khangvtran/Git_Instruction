@@ -1,0 +1,364 @@
+Module 6 class discussion 
+
+============== git =================
+
+1. Set up for git
+A. Create a new directory and to go this directory
+[cnguyen@voyager today]$ ls
+[cnguyen@voyager today]$ ls -a
+.   ..         <-- empty directory
+ 
+B. Initialize as a git directory
+[cnguyen@voyager today]$ git init
+Initialized empty Git repository in /home/staff/cnguyen/today/.git/
+[cnguyen@voyager today]$ ls -a
+.   ..   .git      <-- git creates a hidden directory to keep track of files
+
+C. Config name and email for git.  git will use this name and email as part of the ID of each 
+file that we create. Here the user name is "cis 18b" and the email is the voyager email.
+If we don't init these fields, then git will ask for them when we commit a file into the 
+repository.
+[cnguyen@voyager today]$ git config --global user.name "cis 18b"    
+[cnguyen@voyager today]$ git config --global user.email "clare@voyager.deanza.edu"
+
+D. To show the config fields:
+[cnguyen@voyager today]$ git config --list
+push.default=matching
+user.name=cis 18b
+user.email=clare@voyager.deanza.edu
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+
+
+---------------------------------------------------------------------
+2. Create new files in the git directory
+
+A. Create a text file
+[cnguyen@voyager today]$ echo line of file1 > file1
+[cnguyen@voyager today]$ ls
+file1
+
+B. Show the git status
+[cnguyen@voyager today]$ git status
+# On branch master
+#
+# Initial commit
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       file1
+nothing added to commit but untracked files present (use "git add" to track)
+
+"Initial commit" means there is no file in the repository yet
+"Untracked files:" list of files that are in the directory tree
+"nothing added to commit" means there is no file in the staging area
+"untracked files present" means there are files in the directory tree
+
+C. Create another file2
+[cnguyen@voyager today]$ echo line of file2 > file2
+[cnguyen@voyager today]$ ls
+file1  file2
+[cnguyen@voyager today]$ git status
+# On branch master
+#
+# Initial commit
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       file1
+#       file2
+nothing added to commit but untracked files present (use "git add" to track)
+
+Now there are 2 files in the directory tree.
+
+D. Add file1 to the staging area
+[cnguyen@voyager today]$ git add file1
+[cnguyen@voyager today]$ git status
+# On branch master
+#
+# Initial commit
+#
+# Changes to be committed:
+#   (use "git rm --cached <file>..." to unstage)
+#
+#       new file:   file1
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       file2
+
+"Changes to be committed" is the list of files in the staging area
+"Untracked files" is the list of files in the directory tree
+
+E. Commit files in the staging area to the repository
+[cnguyen@voyager today]$ git commit -m "add file1"
+[master (root-commit) 08d3ae0] add file1
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file1
+[cnguyen@voyager today]$ git status
+# On branch master
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       file2
+nothing added to commit but untracked files present (use "git add" to track)
+
+file1 is now in the repository, file 2 is still in the directory tree. 
+Note that a commit will only add files that are in the staging area (file1 in this case).
+Note also that the explanation for the commit (the -m message) is required.
+If the -m is missing, git wil pop up a vim window to ask for an explanation for the commit.
+With this commit, we have the first version of the "project" in the repository.
+
+F.  Now add file2 into the repository, creating version 2 of the project.
+[cnguyen@voyager today]$ git add file2
+[cnguyen@voyager today]$ git commit -m "add file2"
+[master 9a4cbdf] add file2
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file2
+[cnguyen@voyager today]$ git status
+# On branch master
+nothing to commit, working directory clean
+
+"nothing to commit" means the staging area is empty
+"working directory clean" means the working directory is empty
+This means both file1 and file2 are in the repository
+
+G. Remove a file from the repository
+[cnguyen@voyager today]$ git rm file2
+rm 'file2'
+[cnguyen@voyager today]$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#       deleted:    file2
+#
+[cnguyen@voyager today]$ git commit -m "remove file2"
+[master 9746c55] remove file2git 
+ 1 file changed, 1 deletion(-)
+ delete mode 100644 file2
+[cnguyen@voyager today]$ ls
+file1
+
+Note that this removes file2 not just from git's tracking but also from the directory
+so file2 is gone, as shown in the listing
+
+H. Show log of commit history
+[cnguyen@voyager today]$ git log
+commit 9746c553c12cee35803e1ec84fdfd4fef627eba9
+Author: cis 18b <clare@voyager.deanza.edu>
+Date:   Tue Feb 28 21:58:26 2017 -0800
+
+    remove file2
+
+commit 9a4cbdf6b2567f7579ab44179420677f48a6e11a
+Author: cis 18b <clare@voyager.deanza.edu>
+Date:   Tue Feb 28 21:53:08 2017 -0800
+
+    add file2
+
+commit 08d3ae03833b7d5a3b65b658c14199d1fe4f6f03
+Author: cis 18b <clare@voyager.deanza.edu>
+Date:   Tue Feb 28 21:48:36 2017 -0800
+
+    add file1
+
+
+As can be seen, the log goes from newest to oldest commit. 
+The log shows that we are in version 3 of the project.
+Each commit has a hash value ID and the author name/email
+and the date.
+
+--------------------------------------------------------
+3. Branching
+
+A. When we first work with a git directory, we're in the master branch
+[cnguyen@voyager today]$ git status
+# On branch master
+nothing to commit, working directory clean
+[cnguyen@voyager today]$ ls
+file1
+
+B. Create a new branch and go to this branch
+[cnguyen@voyager today]$ git branch testing
+[cnguyen@voyager today]$ git checkout testing
+Switched to branch 'testing'
+[cnguyen@voyager today]$ git status
+# On branch testing
+nothing to commit, working directory clean
+
+C. Create and commit a file in the testing branch
+[cnguyen@voyager today]$ echo line 1 of fileA in testing branch > fileA
+[cnguyen@voyager today]$ ls
+file1  fileA
+[cnguyen@voyager today]$ git add fileA
+[cnguyen@voyager today]$ git commit -m "add fileA in testing branch"
+[testing b26ef7b] add fileA in testing branch
+ 1 file changed, 1 insertion(+)
+ create mode 100644 fileA
+[cnguyen@voyager today]$ git status
+# On branch testing
+nothing to commit, working directory clean
+[cnguyen@voyager today]$ ls
+file1  fileA
+
+D. Go back to master branch
+[cnguyen@voyager today]$ git checkout master
+Switched to branch 'master'
+[cnguyen@voyager today]$ ls
+file1
+
+Note that when we did the listing in step C (testing branch) we see 2 files: file1 and fileA.
+But now we are in the master branch, and the listing only shows file1.
+The new fileA in the testing branch doesn't affect the master branch.
+
+E. Merging the testing branch into the master branch.
+First confirm that we're on the master branch:
+[cnguyen@voyager today]$ git status
+# On branch master
+nothing to commit, working directory clean
+
+Now merge:
+[cnguyen@voyager today]$ git merge testing
+Updating 9746c55..b26ef7b
+Fast-forward
+ fileA | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 fileA
+[cnguyen@voyager today]$ ls
+file1  fileA
+
+Note that after the merge, the master branch now has the fileA that was in the testing branch.
+
+
+============= gzip and tar  ==================
+
+gzip is to compress file
+A. listing to show size of module6exercise
+[cnguyen@voyager today]$ ls -l module6exercise
+-rw------- 1 cnguyen cisStaff 3503 Feb 28 22:18 module6exercise
+
+B. compress module6exercise and show file size
+[cnguyen@voyager today]$ gzip module6exercise
+[cnguyen@voyager today]$ ls -l module6*
+-rw------- 1 cnguyen cisStaff 1141 Feb 28 22:18 module6exercise.gz
+
+Note that the file module6exercise is gone and is replaced by module6exercise.gz
+
+C. uncompresss module6exercise.gz and show file size
+[cnguyen@voyager today]$ gzip -d module6exercise.gz
+[cnguyen@voyager today]$ ls -l module6*
+-rw------- 1 cnguyen cisStaff 3503 Feb 28 22:18 module6exercise
+
+Note that the file timestamp remains the same.
+
+----------------------------------------------------------------------
+tar is used to take files (which include directories) and put them all together into one file.
+With tar, an entire directory tree will turn into 1 single tar file that can be saved 
+or transferred easily. When needed, the entire directory tree can be reconstructed from
+the single tar file.
+
+A. Start with the directory lab5 with multiple files in it.
+[cnguyen@voyager today]$ ls -l lab5
+drwx-----x 2 cnguyen cisStaff 4096 Feb 28 22:25 lab5
+[cnguyen@voyager today]$ tree lab5
+lab5
+|-- add.cpp
+|-- add.h
+|-- input.cpp
+|-- input.h
+|-- main.cpp
+|-- output.cpp
+`-- output.h
+
+0 directories, 7 files
+
+B. Create an uncompressed tar file
+[cnguyen@voyager today]$ tar cvf feb28.tar lab5
+lab5/
+lab5/output.cpp
+lab5/input.h
+lab5/add.cpp
+lab5/add.h
+lab5/main.cpp
+lab5/output.h
+lab5/input.cpp
+[cnguyen@voyager today]$ ls -l feb28.tar
+-rw------- 1 cnguyen cisStaff 10240 Feb 28 22:27 feb28.tar
+
+C. Add module6exercise to the feb28.tar file
+[cnguyen@voyager today]$ tar rf feb28.tar module6exercise
+
+Show that module6exercise got added into feb28.tar
+[cnguyen@voyager today]$ tar tf feb28.tar
+lab5/
+lab5/output.cpp
+lab5/input.h
+lab5/add.cpp
+lab5/add.h
+lab5/main.cpp
+lab5/output.h
+lab5/input.cpp
+module6exercise
+
+D. compress the tar file
+[cnguyen@voyager today]$ ls -l feb28.tar
+-rw------- 1 cnguyen cisStaff 20480 Feb 28 22:29 feb28.tar
+[cnguyen@voyager today]$ gzip feb28.tar
+[cnguyen@voyager today]$ ls -l feb28*
+-rw------- 1 cnguyen cisStaff 1854 Feb 28 22:29 feb28.tar.gz
+
+Note that the file size changed from 20480 to 1854, and note the filename change.
+
+E. Create a new directory and reconstruct the subdirectory lab5
+[cnguyen@voyager today]$ mkdir newdir
+[cnguyen@voyager today]$ cd newdir
+[cnguyen@voyager newdir]$ cp ../feb28.tar.gz .
+[cnguyen@voyager newdir]$ ls
+feb28.tar.gz
+[cnguyen@voyager newdir]$ tar xzf feb28.tar.gz
+[cnguyen@voyager newdir]$ ls
+feb28.tar.gz  lab5  module6exercise           <-- lab 5 and module6exercise are un-archived
+[cnguyen@voyager newdir]$ tree lab5
+lab5                                                       <-- and so are the files under lab5
+|-- add.cpp
+|-- add.h
+|-- input.cpp
+|-- input.h
+|-- main.cpp
+|-- output.cpp
+`-- output.h
+
+0 directories, 7 files
+
+
+==================== unix - dos  conversion =================
+
+A. newfile has 5 lines of text
+[cnguyen@voyager ~]$ cat newfile
+line 1
+line 2
+line 3
+line 4
+line 5
+[cnguyen@voyager ~]$ ls -l newfile
+-rw------- 1 cnguyen cisStaff 35 Feb 28 22:35 newfile
+
+B. convert to Windows format, note the change in file size
+[cnguyen@voyager ~]$ unix2dos newfile
+unix2dos: converting file newfile to DOS format ...
+[cnguyen@voyager ~]$ ls -l newfile
+-rw------- 1 cnguyen cisStaff 40 Feb 28 22:36 newfile
+
+C. converting back to Linux format, note the change in file size
+[cnguyen@voyager ~]$ dos2unix newfile
+dos2unix: converting file newfile to UNIX format ...
+[cnguyen@voyager ~]$ ls -l newfile
+-rw------- 1 cnguyen cisStaff 35 Feb 28 22:36 newfile
+
+

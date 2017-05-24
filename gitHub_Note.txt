@@ -1,0 +1,44 @@
+1) Plus sign:
+	Create (not initiated)
+	Add (inited)
+	
+	- Choose local path
+	- Github will create a Repo folder, copy file into that directory.
+	- Publish (server)
+
+2) change in existing file:
+	- Change directly in the file itself.
+	- Uncommitted changed
+	- commit to “branch name” (local)
+	- sync (server)
+
+3) Adding new file:
+	Copy file into git folder above
+	comment
+	publish
+	sync
+	*** Checking out different branch results in change of what local machine display.
+
+4) Collaborator:
+	Setting:
+		Collaborator
+	Collaborators are allowed to change file (download git folder and edit)
+	If changes occur on different file (merging without issue)
+	If changes occur on the same file ( Delete the “<<<<<<“ , “=====…”, “>>>>>”) 
+	Publish
+	Sync
+
+5)
+	local git client: remove
+	gitHub server: Setting, Delete (end of page): enter repo name
+	
+
+6) To ignore change in a file:
+	*** Should be done before having 
+	create file gitignore:   touch .gitignore	
+	into this file, use vi to add the files name to be ignored ( *.hpp)
+	
+	*** In case the file has been created
+
+
+

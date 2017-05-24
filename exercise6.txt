@@ -1,0 +1,196 @@
+For each step below you may need to use multiple commands.
+You don't need to turn in every command that you use in each step.
+For turning in work for exercise 5, copy only the commands required
+in the questions labeled Q1, Q2, Q3, Q4a, Q4b...
+
+================= git ===================
+
+1. Create a new directory and go to this directory to initialize
+it as a git directory.
+Q1. Show the command you used to initilize the git directory.
+git init
+-------------------------------------
+
+2. Set your user name and email for git.
+Q2. Show the command you used.
+git config --global user.name "Khang Tran"
+git config --global user.email "vinhkhangtran09@gmail.com"
+
+-------------------------------------
+
+3. Create a new file1 with a line of text, then put it into the git
+repository in the master branch.
+Q3. Show the command(s) you used to put the file into the git repository.
+git add file1
+git commit -m"Commit file1"
+
+Look at the status of the repository and list the files to make sure
+that the commit worked.
+
+-------------------------------------
+4. Create a new branch called testing.
+Q4a. Show the command you used.
+git branch testing
+
+List the directory to see that file1 is already there.
+Go to this testing branch and create a new file2 with a line of text,
+then put it in the staging area.
+Q4b. Show the command you used to put the file in the staging area.
+git add file2
+
+Append a new line of text into file2, then put it in the staging
+area.  (echo line 2 of file2 >> file2)  (git add file2)
+Q4c. Show the status of the repository.
+git status
+# On branch testing
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	new file:   file2
+#
+
+Put all staged files in the git repository.
+Look at the status of the testing branch to make sure all files
+are committed so you're ready for the next question.
+Q4d. Show the status of the repository and show the file listing.
+git status
+# On branch testing
+nothing to commit, working directory clean
+
+ls
+file1  file2
+
+-------------------------------------
+5. Go back to the master branch and do a file listing.
+Q5a. Show the commands that you used.
+git checkout master
+ls
+	file1
+
+
+Merge the testing branch into the master branch.
+Q5b. Show the command(s) that you used.
+git merge testing
+
+Q5c. Show the file listing.
+ls
+	file1  file2
+
+-------------------------------------
+6. Delete file1 from the repository
+Q6. Show the command(s) that you used.
+git rm file1
+(file 1 will not be removed until the next commit)
+
+==================== gzip and tar =================
+
+7. Copy module4Aexercise from the cis18b directory (from
+some weeks ago) to a new file called testfile
+Q7a. Show the long listing of testfile. What's the file size?
+
+ls -l testfile 
+-rw----r-- 1 khangtran.tvk unixStudent 1606 Mar  1 18:10 testfile
+
+Create a compressed testfile, use the verbose option
+Q7b. Show the command you used.
+
+ gzip -v testfile
+testfile:	 59.1% -- replaced with testfile.gz
+
+Do a listing of test* to see the gzip filename.
+
+ls -l test*  
+-rw----r-- 1 khangtran.tvk unixStudent 692 Mar  1 18:10 testfile.gz
+
+Q7c. How is the access time and size of the gzip file compared to
+the original testfile?
+
+Decompress the gzip file.
+Q7d. How is the access time and size of the decompressed file
+compared to the original testfile?
+
+Identical
+
+
+-------------------------------------
+8. Copy the module5exercise directory to your local directory
+and give it the name testdir (cp -r ../cis18b/module5exerciseDir/ testDir)
+
+
+Create an archive file for the testdir directory, make sure it's
+Q8. Show the command you used.
+
+tar -cf tarTestDir testDir/
+
+-------------------------------------
+9. Append testfile to the archive file
+Q9a. Show the command you used.
+
+ tar -rf tarTestDir testfile.gz 
+
+Q9b. Show the files that are in the archive file
+
+-tf tarTestDir 
+
+testDir/
+testDir/name.h
+testDir/printing.cpp
+testDir/hello.cpp
+testDir/module5exercise
+testDir/printing.h
+testDir/name.cpp
+testDir/helloWorld.cpp
+testfile.gz
+
+
+-------------------------------------
+10. Compress the archive file
+Q10. Show the command you used.
+
+gzip tarTestDir 
+
+-------------------------------------
+11. Create a new directory called mod6
+Copy the archive file to mod6
+Move to the mod6 directory and extract all the files
+Q11a. Show the command you used.
+
+tar -xf tarTestDir.gz 
+
+Q11b. Run the tree command at the mod6 directory to show that all
+the files of module5exercises are there.
+
+tree
+.
+|-- tarTestDir.gz
+|-- testDir
+|   |-- hello.cpp
+|   |-- helloWorld.cpp
+|   |-- module5exercise
+|   |-- name.cpp
+|   |-- name.h
+|   |-- printing.cpp
+|   `-- printing.h
+`-- testfile.gz
+
+-------------------------------------
+Go back to the directory where testfile is.
+Look at the size of testfile.
+testfile.gz 
+-rw----r-- 1 khangtran.tvk unixStudent 692 Mar  1 18:10 testfile.gz
+
+
+Change testfile so it follows the Windows format
+unix2dos testfile.gz 
+unix2dos: converting file testfile.gz to DOS format ...
+
+
+Look at the size of testfile.
+
+ ls -l testfile.gz 
+-rw----r-- 1 khangtran.tvk unixStudent 695 Mar  1 18:54 testfile.gz
+
+Q12. Why is there a change in size?
+
+When being converted from a UNIX file into a Window file, the \r is added into test file.gz. Hence, its size increased.
+
