@@ -1,6 +1,6 @@
 1) Plus sign:
 	Create (not initiated)
-	Add (inited)
+	Add (initiated)
 	
 	- Choose local path
 	- Github will create a Repo folder, copy file into that directory.
